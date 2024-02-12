@@ -20,18 +20,15 @@ namespace ConsoleApp1
             }
         
             Console.WriteLine($"Arquivo {filenameWithExtension} criado com sucesso!");
-            Menu.Show(false);
         }
 
-        public static void Read (string filename)
+        public static string[] Read (string filename)
         {
-            Console.WriteLine($"Lendo arquivo {filename}.txt");
-            string filenameWithExtension = filename + ".txt";
-            string fileContent = File.ReadAllText(filenameWithExtension);
-            Console.WriteLine(fileContent);
-            Menu.Show();
+            string fileContent = File.ReadAllText($"{filename}.txt");
+            string[] lines = fileContent.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            return lines;
         }
-
+        
         public static void Update (string filename)
         {
             Console.WriteLine("Atualizando arquivo " + filename);
@@ -39,10 +36,8 @@ namespace ConsoleApp1
 
         public static void Delete (string filename)
         {
-            Console.WriteLine($"Deletando arquivo {filename}.txt");
             File.Delete($"{filename}.txt");
             Console.WriteLine($"Arquivo {filename}.txt deletado com sucesso!");
-            Menu.Show();
         }
     }
 }

@@ -73,6 +73,7 @@ namespace ConsoleApp1
             ManageFiles.Create("costumer", costumerString);
 
             Console.WriteLine("Cliente cadastrado com sucesso!");
+            Menu.Show();
         }
 
         private static void Delete()
