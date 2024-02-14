@@ -24,6 +24,12 @@ namespace ConsoleApp1
 
         public static string[] Read (string filename)
         {
+            if (!File.Exists($"{filename}.txt"))
+            {
+                Console.WriteLine($"Arquivo {filename}.txt não encontrado");
+                return new string[0];
+            }
+
             string fileContent = File.ReadAllText($"{filename}.txt");
             string[] lines = fileContent.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             return lines;

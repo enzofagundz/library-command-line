@@ -2,12 +2,13 @@ using System;
 
 namespace ConsoleApp1
 {
-    class Supplier(string name, string city, string phone, string email) : IController
+    class Supplier(string name, string city, string phone, string email, string cnpj) : IController
     {
         public string Name { get; set; } = name;
         public string City { get; set; } = city;
         public string Phone { get; set; } = phone;
         public string Email { get; set; } = email;
+        public string Cnpj { get; set; } = cnpj;
 
         public static void ShowSupplierMenu()
         {
@@ -51,6 +52,15 @@ namespace ConsoleApp1
                 return;
             }
 
+            Console.WriteLine("Digite o CNPJ do fornecedor:");
+            string? cnpj = Console.ReadLine();
+
+            if (cnpj == null || cnpj.Length != 14)
+            {
+                Console.WriteLine("CNPJ inválido");
+                return;
+            }
+
             Console.WriteLine("Digite a cidade do fornecedor:");
             string? city = Console.ReadLine();
 
@@ -78,35 +88,29 @@ namespace ConsoleApp1
                 return;
             }
 
-            Supplier supplier = new(name, city, phone, email);
-            string supllierString = $"{supplier.Name} - {supplier.City} - {supplier.Phone} - {supplier.Email};";
+            Supplier supplier = new(name, city, phone, email, cnpj);
+            string supllierString = $"name: {supplier.Name} - city: {supplier.City} - phone: {supplier.Phone} - email: {supplier.Email} - cnpj: {supplier.Cnpj};";
+
             ManageFiles.Create("supplier", supllierString);
 
             Console.WriteLine("Fornecedor cadastrado com sucesso!");
-            Menu.Show();
+            Menu.Show(false);
         }
 
         private static void Read()
         {
-            string[] suppliers = ManageFiles.Read("supplier");
-            foreach (string supplier in suppliers)
+            string[] costumers = ManageFiles.Read("supplier");
+            foreach (string costumer in costumers)
             {
-                string[] supplierData = supplier.Split(" - ");
-                if (supplierData.Length >= 4)
-                {
-                    Console.WriteLine($"Nome: {supplierData[0]}");
-                    Console.WriteLine($"Cidade: {supplierData[1]}");
-                    Console.WriteLine($"Telefone: {supplierData[2]}");
-                    Console.WriteLine($"Email: {supplierData[3]}");
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.WriteLine("Dados do fornecedor incompletos.");
-                }
+                string[] costumerData = costumer.Split(" - ");
+                Console.WriteLine($"Nome: {costumerData[0]}");
+                Console.WriteLine($"Cidade: {costumerData[1]}");
+                Console.WriteLine($"Telefone: {costumerData[2]}");
+                Console.WriteLine($"Email: {costumerData[3]}");
+                Console.WriteLine();
             }
 
-            Console.WriteLine("Pressione qualquer tecla para voltar ao menu.");
+            Console.WriteLine("Pressione qualquer tecla para voltar ao menu");
             Console.ReadKey();
             Menu.Show();
         }

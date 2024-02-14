@@ -73,7 +73,7 @@ namespace ConsoleApp1
             ManageFiles.Create("costumer", costumerString);
 
             Console.WriteLine("Cliente cadastrado com sucesso!");
-            Menu.Show();
+            Menu.Show(false);
         }
 
         private static void Delete()
@@ -83,7 +83,19 @@ namespace ConsoleApp1
 
         private static void Read()
         {
-            ManageFiles.Read("costumer");
+            string[] costumers = ManageFiles.Read("costumer");
+            foreach (string costumer in costumers)
+            {
+                string[] costumerData = costumer.Split(" - ");
+                Console.WriteLine($"Nome: {costumerData[0]}");
+                Console.WriteLine($"Email: {costumerData[1]}");
+                Console.WriteLine($"Data de nascimento: {costumerData[2]}");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Pressione qualquer tecla para voltar ao menu");
+            Console.ReadKey();
+            Menu.Show();
         }
 
         private static void Update()

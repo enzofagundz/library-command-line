@@ -34,6 +34,10 @@ namespace ConsoleApp1
                     Costumer.ShowCostumerMenu();
                     break;
                 case 4:
+                    Console.WriteLine("Acessar área de compras");
+                    Purchase.ShowPurchaseMenu();
+                    break;
+                case 5:
                     Console.WriteLine("Sair");
                     Console.WriteLine("Obrigado por usar nosso sistema!");
                     break;
