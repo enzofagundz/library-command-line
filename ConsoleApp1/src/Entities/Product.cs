@@ -1,15 +1,17 @@
 using System;
+using Service;
+using Repository;
 
-namespace ConsoleApp1
+namespace Entities
 {
-    class Product(string name, double price, int quantity, string supplierCNPJ) : IController
+    class Product(string name, double price, int quantity, string supplierCNPJ) : IRepository
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = name;
         public double Price { get; set; } = price;
         public int Quantity { get; set; } = quantity;
         public string SupplierCNPJ { get; set; } = supplierCNPJ;
-    
+
         public static void ShowProductMenu()
         {
             Console.Clear();
@@ -17,10 +19,10 @@ namespace ConsoleApp1
             Console.WriteLine("1 - Cadastrar produto");
             Console.WriteLine("2 - Listar produtos");
             Console.WriteLine("3 - Voltar");
-    
+
             string? opcao = Console.ReadLine();
             int opcaoInt = Convert.ToInt32(opcao);
-    
+
             switch (opcaoInt)
             {
                 case 1:
@@ -29,6 +31,7 @@ namespace ConsoleApp1
                     break;
                 case 2:
                     Console.WriteLine("Listar produtos");
+                    Read();
                     break;
                 case 3:
                     Console.WriteLine("Voltar");
@@ -40,7 +43,8 @@ namespace ConsoleApp1
             }
         }
 
-        private static void Create() {
+        private static void Create()
+        {
             // nome, preço, quantidade e fornecedor
             // TODO: criar uma classe util para validar os inputs
 
@@ -81,15 +85,16 @@ namespace ConsoleApp1
                 return;
             }
 
-            Product product = new (name, Convert.ToDouble(price), Convert.ToInt32(quantity), cnpj);
-            string content = $"id: {product.Id} - name: {product.Name} - price: {product.Price} - quantity: {product.Quantity} - supplierCNPJ: {product.SupplierCNPJ};";
+            Product product = new(name, Convert.ToDouble(price), Convert.ToInt32(quantity), cnpj);
+            string content = $"{product.Id} - {product.Name} - {product.Price} - {product.Quantity} - {product.SupplierCNPJ};";
             ManageFiles.Create("product", content);
 
             Console.WriteLine("Produto cadastrado com sucesso!");
             Menu.Show(false);
         }
 
-        private static void Read() {
+        private static void Read()
+        {
             string[] products = ManageFiles.Read("product");
             foreach (string product in products)
             {
@@ -102,11 +107,13 @@ namespace ConsoleApp1
                 Console.WriteLine();
             }
 
+            Console.WriteLine("Pressione qualquer tecla para voltar ao menu");
+            Console.ReadKey();
             Menu.Show();
         }
 
-        private static void Update() {}
-        
-        private static void Delete() {}
+        private static void Update() { }
+
+        private static void Delete() { }
     }
 }

@@ -1,8 +1,10 @@
 using System;
+using Service;
+using Repository;
 
-namespace ConsoleApp1
+namespace Entities
 {
-    class Costumer(string name, string email, DateTime birthDate) : IController
+    class Costumer(string name, string email, DateTime birthDate) : IRepository
     {
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;

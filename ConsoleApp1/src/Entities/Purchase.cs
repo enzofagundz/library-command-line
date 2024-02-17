@@ -1,17 +1,19 @@
 using System;
-using System.Security.Principal;
+using Service;
+using Repository;
 
-namespace ConsoleApp1 {
-    class Purchase(string productId, string costumerEmail, string supplierCnpj, double total) : IController
+namespace Entities
+{
+    class Purchase(string productId, string costumerEmail, double total) : IRepository
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string ProductId { get; set; } = productId;
         public DateTime Date { get; set; } = DateTime.Now;
         public string CostumerEmail { get; set; } = costumerEmail;
-        public string SupplierCnpj { get; set; } = supplierCnpj;
         public double Total { get; set; } = total;
-        
-        private static void Create() {
+
+        private static void Create()
+        {
             Console.WriteLine("Digite o código do produto:");
             string? productId = Console.ReadLine();
 
@@ -49,15 +51,16 @@ namespace ConsoleApp1 {
                 return;
             }
 
-            Purchase purchase = new (productId, costumerEmail, supplierCnpj, totalDouble);
-            string content = $"id: {purchase.Id} - productId: {purchase.ProductId} - date: {purchase.Date} - costumerEmail: {purchase.CostumerEmail} - supplierCnpj: {purchase.SupplierCnpj} - total: {purchase.Total};";
+            Purchase purchase = new(productId, costumerEmail, totalDouble);
+            string content = $"{purchase.Id} - {purchase.ProductId} - {purchase.Date} - {purchase.CostumerEmail} - {purchase.Total};";
 
             ManageFiles.Create("purchase", content);
             Console.WriteLine("Compra realizada com sucesso!");
             Menu.Show(false);
         }
 
-        private static void Read() {
+        private static void Read()
+        {
             string[] purchases = ManageFiles.Read("purchase");
             foreach (string purchase in purchases)
             {
@@ -76,9 +79,9 @@ namespace ConsoleApp1 {
             Menu.Show();
         }
 
-        private static void Update() {}
-        
-        private static void Delete() {}
+        private static void Update() { }
+
+        private static void Delete() { }
 
         public static void ShowPurchaseMenu()
         {

@@ -1,20 +1,22 @@
 using System;
+using Entities;
 
-namespace ConsoleApp1
+namespace Service
 {
     class Menu
     {
         public static void Show(bool clear = true)
         {
 
-            if (clear) 
+            if (clear)
                 Console.Clear();
-            
+
             Console.WriteLine("Escolha uma opção:");
             Console.WriteLine("1 - Produto");
             Console.WriteLine("2 - Fornecedor");
             Console.WriteLine("3 - Cliente");
-            Console.WriteLine("4 - Sair");
+            Console.WriteLine("4 - Compra");
+            Console.WriteLine("5 - Sair");
 
             string? opcao = Console.ReadLine();
             int opcaoInt = Convert.ToInt32(opcao);

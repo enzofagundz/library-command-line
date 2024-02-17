@@ -1,8 +1,10 @@
 using System;
+using Service;
+using Repository;
 
-namespace ConsoleApp1
+namespace Entities
 {
-    class Supplier(string name, string city, string phone, string email, string cnpj) : IController
+    class Supplier(string name, string city, string phone, string email, string cnpj) : IRepository
     {
         public string Name { get; set; } = name;
         public string City { get; set; } = city;
@@ -16,7 +18,8 @@ namespace ConsoleApp1
             Console.WriteLine("Escolha uma opção:");
             Console.WriteLine("1 - Cadastrar fornecedor");
             Console.WriteLine("2 - Listar fornecedores");
-            Console.WriteLine("3 - Voltar");
+            Console.WriteLine("3 - Atualizar fornecedor");
+            Console.WriteLine("4 - Voltar");
 
             string? opcao = Console.ReadLine();
             int opcaoInt = Convert.ToInt32(opcao);
@@ -32,6 +35,10 @@ namespace ConsoleApp1
                     Read();
                     break;
                 case 3:
+                    Console.WriteLine("Atualizar fornecedor");
+                    Update();
+                    break;
+                case 4:
                     Console.WriteLine("Voltar");
                     Menu.Show();
                     break;
@@ -89,7 +96,7 @@ namespace ConsoleApp1
             }
 
             Supplier supplier = new(name, city, phone, email, cnpj);
-            string supllierString = $"name: {supplier.Name} - city: {supplier.City} - phone: {supplier.Phone} - email: {supplier.Email} - cnpj: {supplier.Cnpj};";
+            string supllierString = $"{supplier.Name} - {supplier.City} - {supplier.Phone} - {supplier.Email} - {supplier.Cnpj};";
 
             ManageFiles.Create("supplier", supllierString);
 
@@ -107,6 +114,7 @@ namespace ConsoleApp1
                 Console.WriteLine($"Cidade: {costumerData[1]}");
                 Console.WriteLine($"Telefone: {costumerData[2]}");
                 Console.WriteLine($"Email: {costumerData[3]}");
+                Console.WriteLine($"CNPJ: {costumerData[4]}");
                 Console.WriteLine();
             }
 
@@ -115,9 +123,88 @@ namespace ConsoleApp1
             Menu.Show();
         }
 
-        private static void Update() { }
+        private static void Update()
+        {
+            // recebe o cnpj do fornecedor
+            // verifica se o fornecedor existe
+            // se não existir, retorna
+            // se existir, retorna os dados atuais do fornecedor
+            // pergunta qual dado deseja alterar
+            // recebe o novo dado
+            // altera o dado
+            // salva o novo fornecedor
 
-        private static void Delete() {
+            Console.WriteLine("Digite o CNPJ do fornecedor:");
+            string? cnpj = Console.ReadLine();
+
+            if (cnpj == null || cnpj.Length != 14)
+            {
+                Console.WriteLine("CNPJ inválido");
+                return;
+            }
+
+            // send the filename and the cnpj to the ManageFiles.Update method, and put his return in a variable 
+            string[] supplierData = ManageFiles.Update("supplier", cnpj, 4);
+            if (supplierData.Length == 0)
+            {
+                Console.WriteLine("Fornecedor não encontrado");
+                return;
+            }
+
+            Supplier oldSupplier = new(supplierData[0], supplierData[1], supplierData[2], supplierData[3], supplierData[4]);
+
+            Console.WriteLine($"Nome: {oldSupplier.Name}");
+            Console.WriteLine($"Cidade: {oldSupplier.City}");
+            Console.WriteLine($"Telefone: {oldSupplier.Phone}");
+            Console.WriteLine($"Email: {oldSupplier.Email}");
+            Console.WriteLine($"CNPJ: {oldSupplier.Cnpj}");
+
+            Console.WriteLine("Digite qual dado deseja alterar:");
+            Console.WriteLine("1 - Nome");
+            Console.WriteLine("2 - Cidade");
+            Console.WriteLine("3 - Telefone");
+            Console.WriteLine("4 - Email");
+
+            string? option = Console.ReadLine();
+            int optionInt = Convert.ToInt32(option);
+
+            Console.WriteLine("Digite o novo dado:");
+            string? newField = Console.ReadLine();
+
+            if (newField == null || newField.Length < 3 || newField.Length > 50)
+            {
+                return;
+            }
+
+            switch (optionInt)
+            {
+                case 1:
+                    oldSupplier.Name = newField;
+                    break;
+                case 2:
+                    oldSupplier.City = newField;
+                    break;
+                case 3:
+                    oldSupplier.Phone = newField;
+                    break;
+                case 4:
+                    oldSupplier.Email = newField;
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida");
+                    break;
+            }
+
+            string newSupplierString = $"{oldSupplier.Name} - {oldSupplier.City} - {oldSupplier.Phone} - {oldSupplier.Email} - {oldSupplier.Cnpj};";
+            // delete the old supplier
+            // create the new supplier
+
+            // ManageFiles.Delete("supplier");
+            // ManageFiles.Create("supplier", newSupplierString);
+        }
+
+        private static void Delete()
+        {
         }
     }
 }
